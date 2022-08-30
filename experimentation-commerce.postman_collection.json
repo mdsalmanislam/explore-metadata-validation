@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "6e3f4670-553b-400b-a174-9a8fca7e8905",
+		"name": "Explore API Automation - Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Commerce Prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//status 200 check",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//key = PID check",
+							"pm.test(\"Key is same as PID for the Premier League\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.key).to.eql(\"4004100\");",
+							"});",
+							"",
+							"//name check",
+							"pm.test(\"name is the Game being played such as Game: Everton vs. Newcastle United\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.includes(\"vs.\");",
+							"});",
+							"",
+							"//description",
+							"pm.test(\"description can either be blank or with content\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.description).to.eql(\"\");",
+							"});",
+							"",
+							"//sponsorName check",
+							"pm.test(\"sponsorName is current sponsor\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.sponsorName).to.not.eql(\"\",null, undefined);",
+							"});",
+							"",
+							"//sponsorImage URL",
+							"pm.test(\"sponsorImage url is valid\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.sponsorImage).to.includes(\"AGG_SOURCE?territory=US\");",
+							"});",
+							"",
+							"//sponsorStartDate format: 2022-02-14T00:00:00.000Z",
+							"pm.test(\"sponsorStartDate should be in YYYY-MM-DDT12:00:00:00.000Z format\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.sponsorStartDate).to.not.eql(\"\",null, undefined);",
+							"});",
+							"",
+							"//sponsorEndDate format: 2022-02-14T00:00:00.000Z",
+							"pm.test(\"sponsorEndDate should be in YYYY-MM-DDT12:00:00:00.000Z format \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.sponsorEndDate).to.not.eql(\"\",null, undefined);",
+							"});",
+							"",
+							"//storeQRCode check",
+							"pm.test(\"storeQRCode should not be blank and should have correct URL\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.storeQRCode).to.includes(\"AGG_SOURCE?territory=US\");",
+							"});",
+							"",
+							"//entity check",
+							"pm.test(\"entity is the teamid\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.entity).to.include(\"6007\");",
+							"});",
+							"",
+							"//type check",
+							"pm.test(\"type of key play\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.type).to.includes(\"goal\", \"kick-off\", \"missed shot\", \"shot\");",
+							"});",
+							"",
+							"",
+							"//commerceOpportunities key check",
+							"pm.test(\"Commerce Opportunities Key\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].key).to.not.eql(\"\", null, undefined);",
+							"});",
+							"",
+							"//commerceOpportunities productName check",
+							"pm.test(\"Commerce Opportunities Product Name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].productName).to.eql(\"Masks\");",
+							"});",
+							"",
+							"//commerceOpportunities productPrice check",
+							"pm.test(\"Commerce Opportunities Product Price\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].productPrice).to.eql(\"$1.99\");",
+							"});",
+							"",
+							"//commerceOpportunities productMainImage check",
+							"pm.test(\"Commerce Opportunities Product Main Image\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].productMainImage).to.includes(\"AGG_SOURCE?territory=US\");",
+							"});",
+							"",
+							"//commerceOpportunities productQRCode check",
+							"pm.test(\"Commerce Opportunities Product QR Code\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].productQRCode).to.includes(\"AGG_SOURCE?territory=US\");",
+							"});",
+							"",
+							"//commerceOpportunities brand check",
+							"pm.test(\"Commerce Opportunities Brand\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].brand).to.eql(\"AmongUs\");",
+							"});",
+							"",
+							"//commerceOpportunities seller check",
+							"pm.test(\"Commerce Opportunities Seller\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.commerceOpportunities[0].seller).to.eql(\"2021\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://commerce.nbcuni.com/public/api/v3/peacock/4005119?allProducts=true",
+					"protocol": "https",
+					"host": [
+						"commerce",
+						"nbcuni",
+						"com"
+					],
+					"path": [
+						"public",
+						"api",
+						"v3",
+						"peacock",
+						"4005119"
+					],
+					"query": [
+						{
+							"key": "allProducts",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Overall MetaData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify request was successfull\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify League ID is present\", ()=> {\r",
+							"pm.expect(jsonData.leagueId).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify Service ID is present\", ()=> {\r",
+							"pm.expect(jsonData.serviceId).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify Game Title is present\", ()=> {\r",
+							"pm.expect(jsonData.title).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify Logo is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].logo).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].logo);\r",
+							" }\r",
+							"});\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005119",
+					"protocol": "https",
+					"host": [
+						"mw",
+						"peacock",
+						"aidisco",
+						"sky",
+						"com"
+					],
+					"path": [
+						"football",
+						"pid",
+						"timeline",
+						"4005119"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify KeyPlays",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify request was successfull\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify All First-Half Keyplays are present not Empty\", ()=>{\r",
+							"var keyPlayArray = []\r",
+							"for(i=0;i<jsonData.views.length;i++){\r",
+							" keyPlayArray.push(jsonData.views[i].timeline[i])\r",
+							"}\r",
+							"var count =0 ;\r",
+							"keyPlayArray.forEach(element => {\r",
+							"  element.timeline.forEach(elements=>{\r",
+							"      count++\r",
+							"      console.log(elements.display.title)\r",
+							"      pm.expect(elements.display.title).to.not.eql(\"\",NaN,undefined);\r",
+							"  })\r",
+							"});\r",
+							"console.log(\"Number of Key Plays in First Half: \" + count)\r",
+							"console.log(count)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify All Second-Half Keyplays are present not Empty\", ()=>{\r",
+							"jsonData.views.forEach(element => {\r",
+							"  element.timeline.forEach(elements=>{\r",
+							"    //console.log(elements)\r",
+							"    keyplays = elements\r",
+							"    })\r",
+							"  })\r",
+							" \r",
+							" var count = 0;\r",
+							" keyplays.timeline.forEach( e=>{\r",
+							"     count++\r",
+							"   console.log(e.display.title);\r",
+							"    pm.expect(e.display.title).to.not.eql(\"\",NaN,undefined);\r",
+							" })\r",
+							" console.log(\"Number of Key Plays in Second Half: \" + count)\r",
+							" console.log(count)\r",
+							" })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005119",
+					"protocol": "https",
+					"host": [
+						"mw",
+						"peacock",
+						"aidisco",
+						"sky",
+						"com"
+					],
+					"path": [
+						"football",
+						"pid",
+						"timeline",
+						"4005119"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

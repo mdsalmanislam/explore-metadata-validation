@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+} 
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+} 
+
+body.theme-light code {
+    color: #000000!important;
+} 
+
+</style>
+</head>
+<body class="">
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">3</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">0</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-4 text-center">Explore Metadata Test Report</h1> 
+   <h5 class="text-center">Tuesday, 07 June 2022 13:56:14</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">14</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> Explore API Automation<br>
+                
+                
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 2.1s<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 36.3KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 636ms<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">6</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Assertions</td>
+                        <td class="text-center">14</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+                
+                <div class="alert alert-success text-uppercase text-center">
+                     <br><br><h1 class="text-center">There are no failed tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+            
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+            <div id="folder-80467062-9ea5-4678-a971-0a070d1ecb0f" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-80467062-9ea5-4678-a971-0a070d1ecb0f" aria-expanded="false" aria-controls="collapse" id="requests-80467062-9ea5-4678-a971-0a070d1ecb0f" class="collapsed text-white z-block">
+                    Iteration: 1 - Overall MetaData <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-80467062-9ea5-4678-a971-0a070d1ecb0f" class="collapse" aria-labelledby="requests-80467062-9ea5-4678-a971-0a070d1ecb0f">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005185" target="_blank">https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005185</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 1347ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 16.69KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-8d3dcac3-0d26-46c0-83b8-e606b9b651b0" class="prettyPrint">{&quot;sport&quot;:&quot;Football&quot;,&quot;leagueId&quot;:&quot;8543c214-eba2-59be-b9de-453ae0d2b108&quot;,&quot;league&quot;:&quot;Premier League&quot;,&quot;serviceId&quot;:&quot;tx-201&quot;,&quot;gameId&quot;:&quot;badce645-39cb-5fad-9c6c-3e16815c0b30&quot;,&quot;startTime&quot;:&quot;2022-05-11T18:30:00.000Z&quot;,&quot;title&quot;:&quot;Leeds United vs. Chelsea&quot;,&quot;teams&quot;:{&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;:{&quot;id&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;teamAbbreviation&quot;:&quot;LEE&quot;,&quot;merlinId&quot;:&quot;6184635439541756119&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;home&quot;:true},&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;:{&quot;id&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;teamAbbreviation&quot;:&quot;CHE&quot;,&quot;merlinId&quot;:&quot;9014036848925223119&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;home&quot;:false}},&quot;views&quot;:[{&quot;title&quot;:&quot;Leeds United vs. Chelsea&quot;,&quot;displayTitle&quot;:false,&quot;timeline&quot;:[{&quot;type&quot;:&quot;SUBCATEGORY&quot;,&quot;title&quot;:&quot;First half&quot;,&quot;timeline&quot;:[{&quot;id&quot;:&quot;76265dc0efaf624f04f4d1a9ab8b86c7&quot;,&quot;playId&quot;:&quot;16e17247-a409-5480-8ab6-05250b3eb2d4&quot;,&quot;timeSeconds&quot;:60,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:0,&quot;endPos&quot;:18000,&quot;startTime&quot;:&quot;2022-05-11T18:30:26+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:30:44+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Kick Off&quot;,&quot;subtitle&quot;:null,&quot;timeText&quot;:&quot;1&#x27;&quot;,&quot;scoreText&quot;:&quot;0-0&quot;,&quot;teamId&quot;:&quot;&quot;,&quot;logo&quot;:&quot;&quot;,&quot;type&quot;:&quot;Kick Off&quot;,&quot;teamMerlinId&quot;:&quot;&quot;,&quot;teamName&quot;:&quot;&quot;,&quot;playerId&quot;:&quot;&quot;,&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;displayName&quot;:&quot;&quot;}},{&quot;id&quot;:&quot;7bb1e98315b83fc6151fe5191bb307a2&quot;,&quot;playId&quot;:&quot;9352fee5-a266-59c9-b4dd-d6675ad60e6b&quot;,&quot;timeSeconds&quot;:195,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:18000,&quot;endPos&quot;:46000,&quot;startTime&quot;:&quot;2022-05-11T18:33:31+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:33:57+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-1&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;4&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;283ab8500c586dc92e4778dc2f840d33&quot;,&quot;playId&quot;:&quot;d28709a2-0a3f-5fca-b591-f1b82940a25a&quot;,&quot;timeSeconds&quot;:575,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:46000,&quot;endPos&quot;:70000,&quot;startTime&quot;:&quot;2022-05-11T18:39:51+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:40:14+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;10&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;0f5597cb8ad672a5af98a839de6b2d69&quot;,&quot;playId&quot;:&quot;8366c7e9-be45-5e41-95c2-6bd867e15e20&quot;,&quot;timeSeconds&quot;:604,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:70000,&quot;endPos&quot;:94000,&quot;startTime&quot;:&quot;2022-05-11T18:40:20+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:40:43+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;11&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;e7e4d776ee4ccbce8f62d57cd6687f54&quot;,&quot;playId&quot;:&quot;442bfada-40cb-5366-bf13-ea92956cd457&quot;,&quot;timeSeconds&quot;:727,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:94000,&quot;endPos&quot;:118000,&quot;startTime&quot;:&quot;2022-05-11T18:42:23+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:42:46+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;13&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;10c57b7b12af56ae73fe24bd2e9d4d60&quot;,&quot;playId&quot;:&quot;51a3ce64-2723-5ecb-acca-f086b001a170&quot;,&quot;timeSeconds&quot;:1094,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:118000,&quot;endPos&quot;:146000,&quot;startTime&quot;:&quot;2022-05-11T18:48:30+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:48:56+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Lewis Bate&quot;,&quot;timeText&quot;:&quot;19&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p450529&quot;,&quot;firstName&quot;:&quot;Lewis&quot;,&quot;lastName&quot;:&quot;Bate&quot;,&quot;displayName&quot;:&quot;Lewis Bate&quot;}},{&quot;id&quot;:&quot;8f66e7ba5874945aa613225009bc0cd9&quot;,&quot;playId&quot;:&quot;1b633581-bf0e-5345-b9f9-c893f37d8e34&quot;,&quot;timeSeconds&quot;:1394,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:146000,&quot;endPos&quot;:164000,&quot;startTime&quot;:&quot;2022-05-11T18:53:35+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:53:53+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Red Card&quot;,&quot;subtitle&quot;:&quot;Daniel James&quot;,&quot;timeText&quot;:&quot;24&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Red card&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p200617&quot;,&quot;firstName&quot;:&quot;Daniel&quot;,&quot;lastName&quot;:&quot;James&quot;,&quot;displayName&quot;:&quot;Daniel James&quot;}},{&quot;id&quot;:&quot;bcf8e37b8b3647922d47966591221307&quot;,&quot;playId&quot;:&quot;15a2e858-8860-595e-8dee-b46a2f7ad3ef&quot;,&quot;timeSeconds&quot;:1630,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:164000,&quot;endPos&quot;:188000,&quot;startTime&quot;:&quot;2022-05-11T18:57:26+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:57:49+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;28&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;b30ae817c8ba85ed83e1bea855ca167f&quot;,&quot;playId&quot;:&quot;dbf34f7e-2490-5e7c-a450-7b6cfe1d5abb&quot;,&quot;timeSeconds&quot;:2016,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:188000,&quot;endPos&quot;:212000,&quot;startTime&quot;:&quot;2022-05-11T19:03:52+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:04:15+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;34&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;568955767a6f24475226227243cecb2b&quot;,&quot;playId&quot;:&quot;aca63b90-7752-5d83-9ded-799e10146866&quot;,&quot;timeSeconds&quot;:3052,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:212000,&quot;endPos&quot;:236000,&quot;startTime&quot;:&quot;2022-05-11T19:21:08+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:21:31+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Trevoh Chalobah&quot;,&quot;timeText&quot;:&quot;45+6&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p180736&quot;,&quot;firstName&quot;:&quot;Trevoh&quot;,&quot;lastName&quot;:&quot;Chalobah&quot;,&quot;displayName&quot;:&quot;Trevoh Chalobah&quot;}}]},{&quot;type&quot;:&quot;SUBCATEGORY&quot;,&quot;title&quot;:&quot;Second half&quot;,&quot;timeline&quot;:[{&quot;id&quot;:&quot;2155afff7d5054cd4d20212573a2514f&quot;,&quot;playId&quot;:&quot;1099c554-686b-50fa-8371-9b8f81162b08&quot;,&quot;timeSeconds&quot;:2902,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:236000,&quot;endPos&quot;:260000,&quot;startTime&quot;:&quot;2022-05-11T19:40:22+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:40:45+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;49&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;9acf025fe55948c321170a803731dc93&quot;,&quot;playId&quot;:&quot;0678c049-de25-57a1-8565-dca62a749ac1&quot;,&quot;timeSeconds&quot;:3113,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:260000,&quot;endPos&quot;:284000,&quot;startTime&quot;:&quot;2022-05-11T19:43:53+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:44:16+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Ruben Loftus-Cheek&quot;,&quot;timeText&quot;:&quot;52&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p126187&quot;,&quot;firstName&quot;:&quot;Ruben&quot;,&quot;lastName&quot;:&quot;Loftus-Cheek&quot;,&quot;displayName&quot;:&quot;Ruben Loftus-Cheek&quot;}},{&quot;id&quot;:&quot;a305edfe9e2b0128679f2a23dc497043&quot;,&quot;playId&quot;:&quot;995faf9d-3183-56fd-8a04-e22161105e26&quot;,&quot;timeSeconds&quot;:3252,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:284000,&quot;endPos&quot;:312000,&quot;startTime&quot;:&quot;2022-05-11T19:46:12+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:46:38+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-2&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;55&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;fb60de9c46493fdcb88063777ce20c70&quot;,&quot;playId&quot;:&quot;6878f770-e4ee-56be-98cb-a4a77df8c450&quot;,&quot;timeSeconds&quot;:3497,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:312000,&quot;endPos&quot;:336000,&quot;startTime&quot;:&quot;2022-05-11T19:50:17+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:50:40+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;59&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;d24053dde40ef69810b10e95c1ae8f06&quot;,&quot;playId&quot;:&quot;56e5dc72-d4b4-5174-9435-e9ff53f1c17b&quot;,&quot;timeSeconds&quot;:3868,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:336000,&quot;endPos&quot;:360000,&quot;startTime&quot;:&quot;2022-05-11T19:56:28+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:56:51+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;65&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;cd8787786255ab5e1d7a13bb75a495b7&quot;,&quot;playId&quot;:&quot;cc63b10d-d751-5f49-9013-b3f381192168&quot;,&quot;timeSeconds&quot;:3984,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:360000,&quot;endPos&quot;:384000,&quot;startTime&quot;:&quot;2022-05-11T19:58:24+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:58:47+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;67&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;2336d05a74fe39f9b51fecd3cc08c18b&quot;,&quot;playId&quot;:&quot;f7b50242-eaba-595b-a79d-017e742fb739&quot;,&quot;timeSeconds&quot;:4160,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:384000,&quot;endPos&quot;:408000,&quot;startTime&quot;:&quot;2022-05-11T20:01:20+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:01:43+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Raphinha&quot;,&quot;timeText&quot;:&quot;70&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p219961&quot;,&quot;firstName&quot;:&quot;Raphael&quot;,&quot;lastName&quot;:&quot;Dias Belloli&quot;,&quot;displayName&quot;:&quot;Raphinha&quot;}},{&quot;id&quot;:&quot;e6e415a1a5e4b615bfddaf14c0efca0f&quot;,&quot;playId&quot;:&quot;3598639d-2fb7-52ab-9d65-fac4132b1422&quot;,&quot;timeSeconds&quot;:4783,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:408000,&quot;endPos&quot;:432000,&quot;startTime&quot;:&quot;2022-05-11T20:11:43+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:12:06+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;80&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;1e6c35535cd3c2bfeed5cc20abf65c4b&quot;,&quot;playId&quot;:&quot;e38d7801-2dbc-52db-8d17-9b596ddf46b2&quot;,&quot;timeSeconds&quot;:4943,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:432000,&quot;endPos&quot;:458000,&quot;startTime&quot;:&quot;2022-05-11T20:14:23+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:14:49+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-3&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;83&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;433df16158b0e497eb03c16818116cd3&quot;,&quot;playId&quot;:&quot;09773bd1-d832-52e5-a36b-c52be7a6aeeb&quot;,&quot;timeSeconds&quot;:5040,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:458000,&quot;endPos&quot;:482000,&quot;startTime&quot;:&quot;2022-05-11T20:16:00+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:16:23+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Robin Koch&quot;,&quot;timeText&quot;:&quot;84&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p193645&quot;,&quot;firstName&quot;:&quot;Robin&quot;,&quot;lastName&quot;:&quot;Koch&quot;,&quot;displayName&quot;:&quot;Robin Koch&quot;}},{&quot;id&quot;:&quot;b1de2a1e6546a33e0dc6c193ec083702&quot;,&quot;playId&quot;:&quot;f4415dec-7fed-5ae7-b989-5834b94c2c01&quot;,&quot;timeSeconds&quot;:5113,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:482000,&quot;endPos&quot;:506000,&quot;startTime&quot;:&quot;2022-05-11T20:17:13+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:17:36+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Hakim Ziyech&quot;,&quot;timeText&quot;:&quot;86&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p124183&quot;,&quot;firstName&quot;:&quot;Hakim&quot;,&quot;lastName&quot;:&quot;Ziyech&quot;,&quot;displayName&quot;:&quot;Hakim Ziyech&quot;}},{&quot;id&quot;:&quot;1ba29a568111251beb470304368a072f&quot;,&quot;playId&quot;:&quot;ee62f905-4fad-57da-85c1-acc362e59248&quot;,&quot;timeSeconds&quot;:5291,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:506000,&quot;endPos&quot;:530000,&quot;startTime&quot;:&quot;2022-05-11T20:20:11+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:20:34+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mateusz Klich&quot;,&quot;timeText&quot;:&quot;89&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p72222&quot;,&quot;firstName&quot;:&quot;Mateusz&quot;,&quot;lastName&quot;:&quot;Klich&quot;,&quot;displayName&quot;:&quot;Mateusz Klich&quot;}},{&quot;id&quot;:&quot;a993d75ff5b909f08f92d016b8b6c648&quot;,&quot;playId&quot;:&quot;e3663c7a-9849-56aa-9e9d-6b08ce1cffcd&quot;,&quot;timeSeconds&quot;:5347,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:530000,&quot;endPos&quot;:552000,&quot;startTime&quot;:&quot;2022-05-11T20:21:07+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:21:30+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;90&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}}]}]}]}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-8d3dcac3-0d26-46c0-83b8-e606b9b651b0">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Console Logs</h5>
+                                    <div class="dyn-height">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Log Messages</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119</code></pre></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-8d3dcac3-0d26-46c0-83b8-e606b9b651b0" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Verify request was successfull</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify League ID is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify Service ID is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify Game Title is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify Logo is Present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">5</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                 
+                        </div>
+                        </div>
+                        </div>
+                                    <div class="row">
+                                      <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Count Information </h5>
+                                     <div class="table-responsive text-nowrap">
+                                        <table id="myTable-8d3dcac3-0d26-46c0-83b8-e606b9b651b0" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Count</th></thead>
+                                            <tbody>
+                                               
+                                                     <tr> 
+                                                    <td>First Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                              
+                                               <tr> 
+                                                    <td>Second Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                               
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    
+                                                    <td class="text-center">5</td>
+                                                     
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    </div>
+                                  </div>    
+                                   </div>    
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-bdcde662-d6ca-462d-b0fd-c055a9dc62b9" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9" aria-expanded="false" aria-controls="collapse" id="requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9" class="collapsed text-white z-block">
+                    Iteration: 1 - Verify KeyPlays <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9" class="collapse" aria-labelledby="requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005185" target="_blank">https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005185</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 166ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 16.69KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-6d5a11ea-19dc-44d3-8ab7-cd9826372067" class="prettyPrint">{&quot;sport&quot;:&quot;Football&quot;,&quot;leagueId&quot;:&quot;8543c214-eba2-59be-b9de-453ae0d2b108&quot;,&quot;league&quot;:&quot;Premier League&quot;,&quot;serviceId&quot;:&quot;tx-201&quot;,&quot;gameId&quot;:&quot;badce645-39cb-5fad-9c6c-3e16815c0b30&quot;,&quot;startTime&quot;:&quot;2022-05-11T18:30:00.000Z&quot;,&quot;title&quot;:&quot;Leeds United vs. Chelsea&quot;,&quot;teams&quot;:{&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;:{&quot;id&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;teamAbbreviation&quot;:&quot;LEE&quot;,&quot;merlinId&quot;:&quot;6184635439541756119&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;home&quot;:true},&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;:{&quot;id&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;teamAbbreviation&quot;:&quot;CHE&quot;,&quot;merlinId&quot;:&quot;9014036848925223119&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;home&quot;:false}},&quot;views&quot;:[{&quot;title&quot;:&quot;Leeds United vs. Chelsea&quot;,&quot;displayTitle&quot;:false,&quot;timeline&quot;:[{&quot;type&quot;:&quot;SUBCATEGORY&quot;,&quot;title&quot;:&quot;First half&quot;,&quot;timeline&quot;:[{&quot;id&quot;:&quot;76265dc0efaf624f04f4d1a9ab8b86c7&quot;,&quot;playId&quot;:&quot;16e17247-a409-5480-8ab6-05250b3eb2d4&quot;,&quot;timeSeconds&quot;:60,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:0,&quot;endPos&quot;:18000,&quot;startTime&quot;:&quot;2022-05-11T18:30:26+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:30:44+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Kick Off&quot;,&quot;subtitle&quot;:null,&quot;timeText&quot;:&quot;1&#x27;&quot;,&quot;scoreText&quot;:&quot;0-0&quot;,&quot;teamId&quot;:&quot;&quot;,&quot;logo&quot;:&quot;&quot;,&quot;type&quot;:&quot;Kick Off&quot;,&quot;teamMerlinId&quot;:&quot;&quot;,&quot;teamName&quot;:&quot;&quot;,&quot;playerId&quot;:&quot;&quot;,&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;displayName&quot;:&quot;&quot;}},{&quot;id&quot;:&quot;7bb1e98315b83fc6151fe5191bb307a2&quot;,&quot;playId&quot;:&quot;9352fee5-a266-59c9-b4dd-d6675ad60e6b&quot;,&quot;timeSeconds&quot;:195,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:18000,&quot;endPos&quot;:46000,&quot;startTime&quot;:&quot;2022-05-11T18:33:31+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:33:57+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-1&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;4&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;283ab8500c586dc92e4778dc2f840d33&quot;,&quot;playId&quot;:&quot;d28709a2-0a3f-5fca-b591-f1b82940a25a&quot;,&quot;timeSeconds&quot;:575,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:46000,&quot;endPos&quot;:70000,&quot;startTime&quot;:&quot;2022-05-11T18:39:51+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:40:14+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;10&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;0f5597cb8ad672a5af98a839de6b2d69&quot;,&quot;playId&quot;:&quot;8366c7e9-be45-5e41-95c2-6bd867e15e20&quot;,&quot;timeSeconds&quot;:604,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:70000,&quot;endPos&quot;:94000,&quot;startTime&quot;:&quot;2022-05-11T18:40:20+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:40:43+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;11&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;e7e4d776ee4ccbce8f62d57cd6687f54&quot;,&quot;playId&quot;:&quot;442bfada-40cb-5366-bf13-ea92956cd457&quot;,&quot;timeSeconds&quot;:727,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:94000,&quot;endPos&quot;:118000,&quot;startTime&quot;:&quot;2022-05-11T18:42:23+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:42:46+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;13&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;10c57b7b12af56ae73fe24bd2e9d4d60&quot;,&quot;playId&quot;:&quot;51a3ce64-2723-5ecb-acca-f086b001a170&quot;,&quot;timeSeconds&quot;:1094,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:118000,&quot;endPos&quot;:146000,&quot;startTime&quot;:&quot;2022-05-11T18:48:30+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:48:56+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Lewis Bate&quot;,&quot;timeText&quot;:&quot;19&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p450529&quot;,&quot;firstName&quot;:&quot;Lewis&quot;,&quot;lastName&quot;:&quot;Bate&quot;,&quot;displayName&quot;:&quot;Lewis Bate&quot;}},{&quot;id&quot;:&quot;8f66e7ba5874945aa613225009bc0cd9&quot;,&quot;playId&quot;:&quot;1b633581-bf0e-5345-b9f9-c893f37d8e34&quot;,&quot;timeSeconds&quot;:1394,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:146000,&quot;endPos&quot;:164000,&quot;startTime&quot;:&quot;2022-05-11T18:53:35+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:53:53+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Red Card&quot;,&quot;subtitle&quot;:&quot;Daniel James&quot;,&quot;timeText&quot;:&quot;24&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Red card&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p200617&quot;,&quot;firstName&quot;:&quot;Daniel&quot;,&quot;lastName&quot;:&quot;James&quot;,&quot;displayName&quot;:&quot;Daniel James&quot;}},{&quot;id&quot;:&quot;bcf8e37b8b3647922d47966591221307&quot;,&quot;playId&quot;:&quot;15a2e858-8860-595e-8dee-b46a2f7ad3ef&quot;,&quot;timeSeconds&quot;:1630,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:164000,&quot;endPos&quot;:188000,&quot;startTime&quot;:&quot;2022-05-11T18:57:26+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T18:57:49+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;28&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;b30ae817c8ba85ed83e1bea855ca167f&quot;,&quot;playId&quot;:&quot;dbf34f7e-2490-5e7c-a450-7b6cfe1d5abb&quot;,&quot;timeSeconds&quot;:2016,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:188000,&quot;endPos&quot;:212000,&quot;startTime&quot;:&quot;2022-05-11T19:03:52+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:04:15+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;34&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;568955767a6f24475226227243cecb2b&quot;,&quot;playId&quot;:&quot;aca63b90-7752-5d83-9ded-799e10146866&quot;,&quot;timeSeconds&quot;:3052,&quot;timeSegment&quot;:1,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:212000,&quot;endPos&quot;:236000,&quot;startTime&quot;:&quot;2022-05-11T19:21:08+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:21:31+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Trevoh Chalobah&quot;,&quot;timeText&quot;:&quot;45+6&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p180736&quot;,&quot;firstName&quot;:&quot;Trevoh&quot;,&quot;lastName&quot;:&quot;Chalobah&quot;,&quot;displayName&quot;:&quot;Trevoh Chalobah&quot;}}]},{&quot;type&quot;:&quot;SUBCATEGORY&quot;,&quot;title&quot;:&quot;Second half&quot;,&quot;timeline&quot;:[{&quot;id&quot;:&quot;2155afff7d5054cd4d20212573a2514f&quot;,&quot;playId&quot;:&quot;1099c554-686b-50fa-8371-9b8f81162b08&quot;,&quot;timeSeconds&quot;:2902,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:236000,&quot;endPos&quot;:260000,&quot;startTime&quot;:&quot;2022-05-11T19:40:22+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:40:45+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;49&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;9acf025fe55948c321170a803731dc93&quot;,&quot;playId&quot;:&quot;0678c049-de25-57a1-8565-dca62a749ac1&quot;,&quot;timeSeconds&quot;:3113,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:260000,&quot;endPos&quot;:284000,&quot;startTime&quot;:&quot;2022-05-11T19:43:53+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:44:16+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Ruben Loftus-Cheek&quot;,&quot;timeText&quot;:&quot;52&#x27;&quot;,&quot;scoreText&quot;:&quot;0-1&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p126187&quot;,&quot;firstName&quot;:&quot;Ruben&quot;,&quot;lastName&quot;:&quot;Loftus-Cheek&quot;,&quot;displayName&quot;:&quot;Ruben Loftus-Cheek&quot;}},{&quot;id&quot;:&quot;a305edfe9e2b0128679f2a23dc497043&quot;,&quot;playId&quot;:&quot;995faf9d-3183-56fd-8a04-e22161105e26&quot;,&quot;timeSeconds&quot;:3252,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:284000,&quot;endPos&quot;:312000,&quot;startTime&quot;:&quot;2022-05-11T19:46:12+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:46:38+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-2&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;55&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;fb60de9c46493fdcb88063777ce20c70&quot;,&quot;playId&quot;:&quot;6878f770-e4ee-56be-98cb-a4a77df8c450&quot;,&quot;timeSeconds&quot;:3497,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:312000,&quot;endPos&quot;:336000,&quot;startTime&quot;:&quot;2022-05-11T19:50:17+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:50:40+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Christian Pulisic&quot;,&quot;timeText&quot;:&quot;59&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p176413&quot;,&quot;firstName&quot;:&quot;Christian&quot;,&quot;lastName&quot;:&quot;Pulisic&quot;,&quot;displayName&quot;:&quot;Christian Pulisic&quot;}},{&quot;id&quot;:&quot;d24053dde40ef69810b10e95c1ae8f06&quot;,&quot;playId&quot;:&quot;56e5dc72-d4b4-5174-9435-e9ff53f1c17b&quot;,&quot;timeSeconds&quot;:3868,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:336000,&quot;endPos&quot;:360000,&quot;startTime&quot;:&quot;2022-05-11T19:56:28+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:56:51+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;65&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;cd8787786255ab5e1d7a13bb75a495b7&quot;,&quot;playId&quot;:&quot;cc63b10d-d751-5f49-9013-b3f381192168&quot;,&quot;timeSeconds&quot;:3984,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:360000,&quot;endPos&quot;:384000,&quot;startTime&quot;:&quot;2022-05-11T19:58:24+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T19:58:47+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;67&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}},{&quot;id&quot;:&quot;2336d05a74fe39f9b51fecd3cc08c18b&quot;,&quot;playId&quot;:&quot;f7b50242-eaba-595b-a79d-017e742fb739&quot;,&quot;timeSeconds&quot;:4160,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:384000,&quot;endPos&quot;:408000,&quot;startTime&quot;:&quot;2022-05-11T20:01:20+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:01:43+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Raphinha&quot;,&quot;timeText&quot;:&quot;70&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p219961&quot;,&quot;firstName&quot;:&quot;Raphael&quot;,&quot;lastName&quot;:&quot;Dias Belloli&quot;,&quot;displayName&quot;:&quot;Raphinha&quot;}},{&quot;id&quot;:&quot;e6e415a1a5e4b615bfddaf14c0efca0f&quot;,&quot;playId&quot;:&quot;3598639d-2fb7-52ab-9d65-fac4132b1422&quot;,&quot;timeSeconds&quot;:4783,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:408000,&quot;endPos&quot;:432000,&quot;startTime&quot;:&quot;2022-05-11T20:11:43+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:12:06+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;80&#x27;&quot;,&quot;scoreText&quot;:&quot;0-2&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;1e6c35535cd3c2bfeed5cc20abf65c4b&quot;,&quot;playId&quot;:&quot;e38d7801-2dbc-52db-8d17-9b596ddf46b2&quot;,&quot;timeSeconds&quot;:4943,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:432000,&quot;endPos&quot;:458000,&quot;startTime&quot;:&quot;2022-05-11T20:14:23+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:14:49+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Goal 0-3&quot;,&quot;subtitle&quot;:&quot;Romelu Lukaku&quot;,&quot;timeText&quot;:&quot;83&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Goal&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p66749&quot;,&quot;firstName&quot;:&quot;Romelu&quot;,&quot;lastName&quot;:&quot;Lukaku&quot;,&quot;displayName&quot;:&quot;Romelu Lukaku&quot;}},{&quot;id&quot;:&quot;433df16158b0e497eb03c16818116cd3&quot;,&quot;playId&quot;:&quot;09773bd1-d832-52e5-a36b-c52be7a6aeeb&quot;,&quot;timeSeconds&quot;:5040,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:458000,&quot;endPos&quot;:482000,&quot;startTime&quot;:&quot;2022-05-11T20:16:00+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:16:23+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Robin Koch&quot;,&quot;timeText&quot;:&quot;84&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p193645&quot;,&quot;firstName&quot;:&quot;Robin&quot;,&quot;lastName&quot;:&quot;Koch&quot;,&quot;displayName&quot;:&quot;Robin Koch&quot;}},{&quot;id&quot;:&quot;b1de2a1e6546a33e0dc6c193ec083702&quot;,&quot;playId&quot;:&quot;f4415dec-7fed-5ae7-b989-5834b94c2c01&quot;,&quot;timeSeconds&quot;:5113,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:482000,&quot;endPos&quot;:506000,&quot;startTime&quot;:&quot;2022-05-11T20:17:13+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:17:36+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Hakim Ziyech&quot;,&quot;timeText&quot;:&quot;86&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p124183&quot;,&quot;firstName&quot;:&quot;Hakim&quot;,&quot;lastName&quot;:&quot;Ziyech&quot;,&quot;displayName&quot;:&quot;Hakim Ziyech&quot;}},{&quot;id&quot;:&quot;1ba29a568111251beb470304368a072f&quot;,&quot;playId&quot;:&quot;ee62f905-4fad-57da-85c1-acc362e59248&quot;,&quot;timeSeconds&quot;:5291,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:506000,&quot;endPos&quot;:530000,&quot;startTime&quot;:&quot;2022-05-11T20:20:11+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:20:34+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Shot&quot;,&quot;subtitle&quot;:&quot;Mateusz Klich&quot;,&quot;timeText&quot;:&quot;89&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;8e74c05e-b8b1-5528-a7c4-c9fa2a739128&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;6184635439541756119&quot;,&quot;type&quot;:&quot;Shot&quot;,&quot;teamMerlinId&quot;:&quot;6184635439541756119&quot;,&quot;teamName&quot;:&quot;Leeds United&quot;,&quot;playerId&quot;:&quot;p72222&quot;,&quot;firstName&quot;:&quot;Mateusz&quot;,&quot;lastName&quot;:&quot;Klich&quot;,&quot;displayName&quot;:&quot;Mateusz Klich&quot;}},{&quot;id&quot;:&quot;a993d75ff5b909f08f92d016b8b6c648&quot;,&quot;playId&quot;:&quot;e3663c7a-9849-56aa-9e9d-6b08ce1cffcd&quot;,&quot;timeSeconds&quot;:5347,&quot;timeSegment&quot;:2,&quot;video&quot;:{&quot;format&quot;:&quot;CMAF&quot;,&quot;startPos&quot;:530000,&quot;endPos&quot;:552000,&quot;startTime&quot;:&quot;2022-05-11T20:21:07+00:00&quot;,&quot;endTime&quot;:&quot;2022-05-11T20:21:30+00:00&quot;},&quot;type&quot;:&quot;VIDEO&quot;,&quot;display&quot;:{&quot;title&quot;:&quot;Missed Shot&quot;,&quot;subtitle&quot;:&quot;Mason Mount&quot;,&quot;timeText&quot;:&quot;90&#x27;&quot;,&quot;scoreText&quot;:&quot;0-3&quot;,&quot;teamId&quot;:&quot;0e700333-6a7a-51d9-90f5-f7eee360a445&quot;,&quot;logo&quot;:&quot;https://edge.myriad-xcr.xcr.comcast.net/select/logo?width&#x3D;100&amp;height&#x3D;100&amp;extent&#x3D;true&amp;entityId&#x3D;9014036848925223119&quot;,&quot;type&quot;:&quot;Miss&quot;,&quot;teamMerlinId&quot;:&quot;9014036848925223119&quot;,&quot;teamName&quot;:&quot;Chelsea&quot;,&quot;playerId&quot;:&quot;p184341&quot;,&quot;firstName&quot;:&quot;Mason&quot;,&quot;lastName&quot;:&quot;Mount&quot;,&quot;displayName&quot;:&quot;Mason Mount&quot;}}]}]}]}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-6d5a11ea-19dc-44d3-8ab7-cd9826372067">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Console Logs</h5>
+                                    <div class="dyn-height">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Log Messages</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">First Half Starts</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Kick Off</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Goal 0-1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Red Card</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">First half Total: 10</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Second Half Starts</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Goal 0-2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Goal 0-3</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Missed Shot</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Second half Total: 13</code></pre></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-6d5a11ea-19dc-44d3-8ab7-cd9826372067" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Verify request was successfull</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify All First-Half and Second Half Keyplays are not Empty</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                 
+                        </div>
+                        </div>
+                        </div>
+                                    <div class="row">
+                                      <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Count Information </h5>
+                                     <div class="table-responsive text-nowrap">
+                                        <table id="myTable-6d5a11ea-19dc-44d3-8ab7-cd9826372067" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Count</th></thead>
+                                            <tbody>
+                                               
+                                                     <tr> 
+                                                    <td>First Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                              
+                                               <tr> 
+                                                    <td>Second Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                               
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    
+                                                    <td class="text-center">2</td>
+                                                     
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    </div>
+                                  </div>    
+                                   </div>    
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-096359fc-a793-4610-8df6-e4eeab0cdf8a" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a" aria-expanded="false" aria-controls="collapse" id="requests-096359fc-a793-4610-8df6-e4eeab0cdf8a" class="collapsed text-white z-block">
+                    Iteration: 1 - Commerce Calls <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a" class="collapse" aria-labelledby="requests-096359fc-a793-4610-8df6-e4eeab0cdf8a">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://commerce.nbcuni.com/public/api/v3/peacock/4005767?allProducts&#x3D;true" target="_blank">https://commerce.nbcuni.com/public/api/v3/peacock/4005767?allProducts&#x3D;true</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 396ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 2.91KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-1ce4be03-5563-4fd0-9b4d-705c06b20ef4" class="prettyPrint">{&quot;key&quot;:&quot;4005767&quot;,&quot;name&quot;:&quot;June 7 Demo Game: Manchester United v. West Ham&quot;,&quot;description&quot;:&quot;&quot;,&quot;sponsorName&quot;:&quot;Capital One&quot;,&quot;sponsorImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/sponsor_logo_4005767/AGG_SOURCE?territory&#x3D;US&quot;,&quot;sponsorBumperImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/sponsor_bumper_image_4005767/AGG_SOURCE?territory&#x3D;US&quot;,&quot;sponsorStartDate&quot;:&quot;2022-05-02T04:00:00.000Z&quot;,&quot;sponsorEndDate&quot;:&quot;2023-05-26T04:00:00.000Z&quot;,&quot;storeQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005218/AGG_SOURCE?territory&#x3D;US&quot;,&quot;entity&quot;:&quot;&quot;,&quot;type&quot;:&quot;&quot;,&quot;commerceOpportunities&quot;:[{&quot;key&quot;:&quot;7996cfa3-737f-4d8b-8a6b-d0b917d6b1c0&quot;,&quot;productName&quot;:&quot;Bala Bangles&quot;,&quot;productPrice&quot;:&quot;&quot;,&quot;productMainImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/product_image_7996cfa3-737f-4d8b-8a6b-d0b917d6b1c0/AGG_SOURCE?territory&#x3D;US&quot;,&quot;offerText_1&quot;:&quot;&quot;,&quot;offerText_2&quot;:&quot;&quot;,&quot;productQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005767_7996cfa3-737f-4d8b-8a6b-d0b917d6b1c0/AGG_SOURCE?territory&#x3D;US&quot;,&quot;brand&quot;:&quot;Bala&quot;,&quot;seller&quot;:null},{&quot;key&quot;:&quot;5faf368d-1403-49df-9d3a-cb848fc9279f&quot;,&quot;productName&quot;:&quot;Lightweight Bodymap Train T-Shirt&quot;,&quot;productPrice&quot;:&quot;$29.99&quot;,&quot;productMainImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/product_image_5faf368d-1403-49df-9d3a-cb848fc9279f/AGG_SOURCE?territory&#x3D;US&quot;,&quot;offerText_1&quot;:&quot;&quot;,&quot;offerText_2&quot;:&quot;&quot;,&quot;productQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005767_5faf368d-1403-49df-9d3a-cb848fc9279f/AGG_SOURCE?territory&#x3D;US&quot;,&quot;brand&quot;:&quot;Hill City&quot;,&quot;seller&quot;:&quot;2013&quot;},{&quot;key&quot;:&quot;3466c974-fcb1-4100-b817-0a321a8558ff&quot;,&quot;productName&quot;:&quot;Ella Puff Sleeve Mini Dress&quot;,&quot;productPrice&quot;:&quot;$60.00&quot;,&quot;productMainImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/product_image_3466c974-fcb1-4100-b817-0a321a8558ff/AGG_SOURCE?territory&#x3D;US&quot;,&quot;offerText_1&quot;:&quot;&quot;,&quot;offerText_2&quot;:&quot;&quot;,&quot;productQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005767_3466c974-fcb1-4100-b817-0a321a8558ff/AGG_SOURCE?territory&#x3D;US&quot;,&quot;brand&quot;:&quot;NBCU TEST&quot;,&quot;seller&quot;:&quot;2013&quot;},{&quot;key&quot;:&quot;6a8ffa9f-5572-44ed-bd89-1bc975c3df4f&quot;,&quot;productName&quot;:&quot;Bala Beam&quot;,&quot;productPrice&quot;:&quot;&quot;,&quot;productMainImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/product_image_6a8ffa9f-5572-44ed-bd89-1bc975c3df4f/AGG_SOURCE?territory&#x3D;US&quot;,&quot;offerText_1&quot;:&quot;&quot;,&quot;offerText_2&quot;:&quot;&quot;,&quot;productQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005767_6a8ffa9f-5572-44ed-bd89-1bc975c3df4f/AGG_SOURCE?territory&#x3D;US&quot;,&quot;brand&quot;:&quot;Bala&quot;,&quot;seller&quot;:null},{&quot;key&quot;:&quot;4152ae82-23b7-45a1-8ee6-63c90b24f5d4&quot;,&quot;productName&quot;:&quot;High Rise Pocket Bike Short&quot;,&quot;productPrice&quot;:&quot;$29.99&quot;,&quot;productMainImage&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/product_image_4152ae82-23b7-45a1-8ee6-63c90b24f5d4/AGG_SOURCE?territory&#x3D;US&quot;,&quot;offerText_1&quot;:&quot;&quot;,&quot;offerText_2&quot;:&quot;&quot;,&quot;productQRCode&quot;:&quot;https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005767_4152ae82-23b7-45a1-8ee6-63c90b24f5d4/AGG_SOURCE?territory&#x3D;US&quot;,&quot;brand&quot;:&quot;Girlfriend Collective&quot;,&quot;seller&quot;:&quot;2013&quot;}]}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-1ce4be03-5563-4fd0-9b4d-705c06b20ef4">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Console Logs</h5>
+                                    <div class="dyn-height">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Log Messages</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Connection Stablished</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Game Name: June 7 Demo Game: Manchester United v. West Ham</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Sponsor Name: Capital One</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Sponsor Logo : https://imageservice.disco.peacocktv.com/contentid/sponsor_logo_4005767/AGG_SOURCE?territory&#x3D;US</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Store QR Code : https://imageservice.disco.peacocktv.com/contentid/game_qrcode_4005218/AGG_SOURCE?territory&#x3D;US</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Product Name: Bala Bangles</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : productPrice</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : seller</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : productPrice</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : seller</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_1</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : offerText_2</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : description</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : entity</code></pre></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><pre><code class="prettyPrint">Empty Parameter : type</code></pre></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-1ce4be03-5563-4fd0-9b4d-705c06b20ef4" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Verify request was successfull</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify game name is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify sponsor Name is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify sponsor Image is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify sponsor QR Code is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify Product Name is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Verify Commerce Opprtunities are present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">7</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                 
+                        </div>
+                        </div>
+                        </div>
+                                    <div class="row">
+                                      <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Count Information </h5>
+                                     <div class="table-responsive text-nowrap">
+                                        <table id="myTable-1ce4be03-5563-4fd0-9b4d-705c06b20ef4" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Count</th></thead>
+                                            <tbody>
+                                               
+                                                     <tr> 
+                                                    <td>First Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                              
+                                               <tr> 
+                                                    <td>Second Half total :</td>
+                                                   <td class="text-center  bg-success "></td>
+                                                     </tr>
+                                               
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    
+                                                    <td class="text-center">7</td>
+                                                     
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    </div>
+                                  </div>    
+                                   </div>    
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('#myTable-8d3dcac3-0d26-46c0-83b8-e606b9b651b0').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+$(document).ready( function () {
+    $('#myTable-6d5a11ea-19dc-44d3-8ab7-cd9826372067').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+$(document).ready( function () {
+    $('#myTable-1ce4be03-5563-4fd0-9b4d-705c06b20ef4').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-1c77121d-77cd-4535-9fe2-5abbfba83bc3-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-1c77121d-77cd-4535-9fe2-5abbfba83bc3-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-1c77121d-77cd-4535-9fe2-5abbfba83bc3-iteration-0').addClass('collapsed')
+            $('#folder-collapse-1c77121d-77cd-4535-9fe2-5abbfba83bc3-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('collapsed')
+            $('#collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('collapsed')
+            $('#requests-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('show')
+            $('#collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('show')
+            $('#requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('collapsed')
+            $('#collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('collapsed')
+            $('#requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('show')
+            $('#collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('show')
+            $('#requests-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('collapsed')
+            $('#collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('collapsed')
+            $('#requests-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('show')
+            $('#collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('collapsed')
+            $('#collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('collapsed')
+            $('#requests-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('show')
+            $('#collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('show')
+            $('#requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('collapsed')
+            $('#collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('collapsed')
+            $('#requests-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('show')
+            $('#collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('show')
+            $('#requests-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('collapsed')
+            $('#collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('collapsed')
+            $('#requests-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('show')
+            $('#collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('collapsed')
+            $('#skipped-collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('collapsed')
+            $('#skipped-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('show')
+            $('#skipped-collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('show')
+            $('#skipped-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('collapsed')
+            $('#skipped-collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('collapsed')
+            $('#skipped-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('show')
+            $('#skipped-collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('show')
+            $('#skipped-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('collapsed')
+            $('#skipped-collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('collapsed')
+            $('#skipped-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('show')
+            $('#skipped-collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('collapsed')
+            $('#skipped-collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').addClass('collapsed')
+            $('#skipped-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('show')
+            $('#skipped-collapse-80467062-9ea5-4678-a971-0a070d1ecb0f').removeClass('show')
+            $('#skipped-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('collapsed')
+            $('#skipped-collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').addClass('collapsed')
+            $('#skipped-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('show')
+            $('#skipped-collapse-bdcde662-d6ca-462d-b0fd-c055a9dc62b9').removeClass('show')
+            $('#skipped-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('collapsed')
+            $('#skipped-collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').addClass('collapsed')
+            $('#skipped-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('show')
+            $('#skipped-collapse-096359fc-a793-4610-8df6-e4eeab0cdf8a').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);            
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+    
+    
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+    
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+    
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+<script>
+  // compile the template
+  var template = Handlebars.compile("Handlebars <b></b>");
+  // execute the compiled template and print the output to the console
+  console.log(template({ doesWhat: "rocks!" }));
+</script>
+<script>
+$(document).ready(function(){
+    $(function() {
+       
+        var d = document.getElementsByClassName("prettyPrint hljs yaml")
+        var first_half_total=""
+        var second_half_total=""
+        for (let index = 0; index < d.length; index++) {
+              var p = d[index].innerText.split(":")
+            for(let indi = 0 ;indi<p.length;indi++)
+                {
+                    if(index==0)
+                     first_half_total = p[p.length-1]
+                     else if ((index==1))
+                     second_half_total=  p[p.length-1]
+                }
+            }
+        var c = document.getElementsByClassName("text-center")
+        var k = document.getElementsByClassName("text-center  bg-success ")
+     //console.log(k[12].innerHTML)
+     k[9].innerHTML = first_half_total
+      k[10].innerHTML = second_half_total
+      var id = (parseInt(first_half_total)+parseInt(second_half_total))
+      console.log(id.toString())
+      c[72].innerHTML = id.toString()
+      //  console.log(response.body)
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	    $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+        $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$('#showOnlyFailures').on('click', function(e) {
+    let clickCount = $(this).data("clickCount") || 1
+	$("#filterInput").val()!="" && clickCount==1 ? $("#filterInput").val('').trigger('input'): null;
+    let selectedIteration = $('#iterationList li').filter(function () { 
+        return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+    });
+    selectedIteration.length || clickCount > 1 ? null : $("#iterationList li.itFailed")[0].click()
+    $("#iterationList li.itPassed").toggle()
+    $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    clickCount = clickCount > 1 ? 1 : ++clickCount;
+    clickCount > 1 ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+    $(this).data("clickCount", clickCount)     
+})
+</script>
+
+<!-- Set The Theme Of The Report -->
+
+<script>
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.body.className = themeName;
+        }
+
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-dark');
+            } else {
+                setTheme('theme-light');
+            }
+        }
+
+        (function () {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-light');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-dark');
+                document.getElementById('slider').checked = true;
+            }
+        })();
+</script>

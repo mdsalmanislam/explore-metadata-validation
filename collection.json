@@ -1,0 +1,381 @@
+{
+	"info": {
+		"_postman_id": "90031b21-0f71-4ac2-a212-a00753a96a4c",
+		"name": "Explore API Automation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17462845"
+	},
+	"item": [
+		{
+			"name": "Overall MetaData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"//Verify response status is 200\r",
+							"pm.test(\"Verify request was successfull\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Verify sport is not empty, null or undefined\r",
+							"pm.test(\"Verify sport is present\", ()=> {\r",
+							"pm.expect(jsonData.sport).to.not.eql(\"\",NaN,undefined);\r",
+							"pm.expect(jsonData.sport).to.eql(\"Football\");\r",
+							"});\r",
+							"\r",
+							"//Verify leagueID\r",
+							"pm.test(\"Verify League ID is present\", ()=> {\r",
+							"pm.expect(jsonData.leagueId).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"//Verify league name is present\r",
+							"pm.test(\"Verify League is present\", ()=> {\r",
+							"pm.expect(jsonData.league).to.not.eql(\"\",NaN,undefined);\r",
+							"pm.expect(jsonData.league).to.eql(\"Premier League\");\r",
+							"});\r",
+							"\r",
+							"//Verify serviceId\r",
+							"pm.test(\"Verify Service ID is present\", ()=> {\r",
+							"pm.expect(jsonData.serviceId).to.not.eql(\"\",NaN,undefined);\r",
+							"pm.expect(jsonData.serviceId).to.include(\"tx-\")\r",
+							"});\r",
+							"\r",
+							"//Verify gameID \r",
+							"pm.test(\"Verify gameId is present\", ()=> {\r",
+							"pm.expect(jsonData.gameId).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"//Verify startTime\r",
+							"pm.test(\"Verify startTime is present\", ()=> {\r",
+							"pm.expect(jsonData.gameId).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"//Verify game title\r",
+							"pm.test(\"Verify Game Title is present\", ()=> {\r",
+							"pm.expect(jsonData.title).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"//Verify team id\r",
+							"pm.test(\"Verify team id is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].id).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].id);\r",
+							" }\r",
+							"});\r",
+							"\r",
+							"//Verify teamName\r",
+							"pm.test(\"Verify teamName is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].teamName).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].teamName);\r",
+							" }\r",
+							"});\r",
+							" \r",
+							" //Verify teamAbbreviation\r",
+							"pm.test(\"Verify teamAbbreviation is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].teamAbbreviation).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].teamAbbreviation);\r",
+							" }\r",
+							"});\r",
+							" \r",
+							"//Verify merlinId\r",
+							"pm.test(\"Verify merlinId is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].merlinId).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].merlinId);\r",
+							" }\r",
+							"});\r",
+							"\r",
+							"//Verify logo\r",
+							"pm.test(\"Verify Logo is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].logo).to.not.eql(\"\",NaN,undefined);\r",
+							"  console.log(jsonData.teams[key].logo);\r",
+							" }\r",
+							"});\r",
+							"\r",
+							"//Verify home game value either true or false\r",
+							"pm.test(\"Verify home game is true or false\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].home).to.be.oneOf([true, false]);\r",
+							"    console.log(jsonData.teams[key].home);\r",
+							" }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify Logo is Present\",()=>{\r",
+							"for(key in jsonData.teams){\r",
+							"     pm.expect(jsonData.teams[key].logo).to.not.eql(\"\",NaN,undefined);\r",
+							"     console.log(\"\")\r",
+							"     console.log(jsonData.teams[key].logo);\r",
+							" }\r",
+							"});\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005767",
+					"protocol": "https",
+					"host": [
+						"mw",
+						"peacock",
+						"aidisco",
+						"sky",
+						"com"
+					],
+					"path": [
+						"football",
+						"pid",
+						"timeline",
+						"4005767"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify KeyPlays",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify request was successful\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var first_half = []\r",
+							"var second_half = []\r",
+							"pm.test(\"Verify All First-Half and Second Half Keyplays are not Empty\", ()=>{\r",
+							" for (const key in jsonData) {\r",
+							"      if(key== undefined || key == NaN || key == null || key == []){\r",
+							"        console.log('hello')\r",
+							"      }\r",
+							"       else  if(jsonData[key]== undefined || jsonData[key] == NaN || jsonData[key] == null || jsonData[key].length == 0){\r",
+							"        console.log(key+' is found empty')\r",
+							"        pm.expect(jsonData[key].length).to.not.eql(0);\r",
+							"        return;\r",
+							"      }\r",
+							"  }\r",
+							"\r",
+							"jsonData.views.forEach(element => {\r",
+							"  element.timeline.forEach(elements=>{\r",
+							"       if(elements.title == 'First half'){\r",
+							"       first_half = elements.timeline\r",
+							"       pm.expect(first_half).to.not.eql(\"\",'',NaN,undefined,[]);\r",
+							"       pm.expect(first_half).to.not.be.null;\r",
+							"       }\r",
+							"       \r",
+							"       else if(elements.title == 'Second half'){\r",
+							"        second_half = elements.timeline\r",
+							"        pm.expect(second_half).to.not.eql(\"\",'',NaN,undefined,[]);\r",
+							"        pm.expect(second_half).to.not.be.null;\r",
+							"        }\r",
+							"    })\r",
+							"  })\r",
+							"\r",
+							"    var countFirstHalf=0;\r",
+							"    console.log(\"First Half Starts\")\r",
+							"    first_half.forEach(element => {\r",
+							"    countFirstHalf++;\r",
+							"    console.log(element.display.title)\r",
+							"  });\r",
+							"  console.log(\"First half Total: \" + countFirstHalf)\r",
+							"\r",
+							"var countSecondHalf=0;\r",
+							"   console.log(\"Second Half Starts\")\r",
+							"   second_half.forEach(element => {\r",
+							"   countSecondHalf++;\r",
+							"   console.log(element.display.title)\r",
+							"})\r",
+							"console.log(\"Second half Total: \" + countSecondHalf)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://mw.peacock.aidisco.sky.com/football/pid/timeline/4005767",
+					"protocol": "https",
+					"host": [
+						"mw",
+						"peacock",
+						"aidisco",
+						"sky",
+						"com"
+					],
+					"path": [
+						"football",
+						"pid",
+						"timeline",
+						"4005767"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commerce Calls",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify request was successfull\", ()=> {\r",
+							"    console.log(\"Connection Stablished\")\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify game name is present\", ()=> {\r",
+							"    console.log(\"Game Name: \" + jsonData.name)\r",
+							"pm.expect(jsonData.name).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify sponsor Name is present\", ()=> {\r",
+							"    console.log(\"Sponsor Name: \" + jsonData.sponsorName)\r",
+							"pm.expect(jsonData.sponsorName).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify sponsor Image is present\", ()=> {\r",
+							"    console.log(\"Sponsor Logo : \" + jsonData.sponsorImage)\r",
+							"pm.expect(jsonData.sponsorImage).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify sponsor QR Code is present\", ()=> {\r",
+							"    console.log(\"Store QR Code : \" + jsonData.storeQRCode)\r",
+							"pm.expect(jsonData.storeQRCode).to.not.eql(\"\",NaN,undefined);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify Product Name is present\", ()=> {\r",
+							"    console.log(\"Product Name: \" + jsonData.commerceOpportunities[0].productName)\r",
+							"pm.expect(jsonData.commerceOpportunities[0].productName).to.not.eql(\"\",NaN,undefined)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify Commerce Opprtunities are present\", ()=> {\r",
+							"com_ops = jsonData['commerceOpportunities']\r",
+							"elems = []\r",
+							"com_ops.forEach(element => {\r",
+							"  for (const key in element) {\r",
+							"     \r",
+							"           const elem = element[key];\r",
+							"          // console.log(elem)\r",
+							"          // console.log(key+'-----------------'+elem)\r",
+							"           if( element[key]==null||element[key]===''){\r",
+							"             console.log('Empty Parameter : ' + key)\r",
+							"           }\r",
+							"}\r",
+							"\r",
+							"});\r",
+							"for (const key in jsonData) {\r",
+							"      if(key== undefined || key == NaN || key == null || key == []){\r",
+							"        console.log('Key is Null')\r",
+							"      }\r",
+							"       else  if(jsonData[key]== undefined || jsonData[key] == NaN || jsonData[key] == null || jsonData[key].length === 0){\r",
+							"        console.log('Empty Parameter : ' + key)\r",
+							"      }\r",
+							"  }\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "JGvNtG7P5P6Rxs063tr2U9gpRWCYO9lv800o8AoT",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://commerce.nbcuni.com/public/api/v3/peacock/4005767?allProducts=true",
+					"protocol": "https",
+					"host": [
+						"commerce",
+						"nbcuni",
+						"com"
+					],
+					"path": [
+						"public",
+						"api",
+						"v3",
+						"peacock",
+						"4005767"
+					],
+					"query": [
+						{
+							"key": "allProducts",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
